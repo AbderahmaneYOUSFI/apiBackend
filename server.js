@@ -11,12 +11,10 @@ mongoose.set('debug', true);
 const uri = "mongodb+srv://yousfi:yousfi@cluster0.7nczx4e.mongodb.net/assignmentsDB?retryWrites=true&w=majority&appName=Cluster0";
 
 const options = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify:false
+  
 };
 
-mongoose.connect(uri, options)
+mongoose.connect(uri)
   .then(() => {
     console.log("Connecté à la base MongoDB assignments dans le cloud !");
     console.log("at URI = " + uri);
