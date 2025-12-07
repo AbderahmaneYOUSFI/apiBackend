@@ -11,10 +11,12 @@ mongoose.set('debug', true);
 const uri = "mongodb+srv://yousfi:yousfi@cluster0.7nczx4e.mongodb.net/assignmentsDB?retryWrites=true&w=majority&appName=Cluster0";
 
 const options = {
-  
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify:false
 };
 
-mongoose.connect(uri)
+mongoose.connect(uri, options)
   .then(() => {
     console.log("Connecté à la base MongoDB assignments dans le cloud !");
     console.log("at URI = " + uri);
@@ -25,7 +27,7 @@ mongoose.connect(uri)
     });
 
 // Pour accepter les connexions cross-domain (CORS)
-app.use(function (req, res, next) {
+app.use((req, res, next) =>  {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
@@ -42,20 +44,18 @@ let port = process.env.PORT || 8010;
 const prefix = '/api';
 
 app.route(prefix + '/assignments')
-  .get(assignment.getAssignments);
+  .get(assignment.getAssignments)
+  .post(assignment.postAssignment)
+  .put(assignment.updateAssignment);
+
 
 app.route(prefix + '/assignments/:id')
   .get(assignment.getAssignment)
   .delete(assignment.deleteAssignment);
 
-
-app.route(prefix + '/assignments')
-  .post(assignment.postAssignment)
-  .put(assignment.updateAssignment);
-
 // On démarre le serveur
 app.listen(port, "0.0.0.0");
-console.log('Serveur démarré sur http://localhost:' + port);
+console.log('Serveur démarré  sur http://localhost:' + port);
 
 module.exports = app;
 
